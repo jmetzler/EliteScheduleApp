@@ -1,23 +1,37 @@
 (function(){
     'user strict';
     
-    angular.module('eliteApp').factory('eliteApi', [eliteApi]);
+    angular.module('eliteApp').factory('eliteApi', ['$http', eliteApi]);
     
-    function eliteApi(){
-        var leagues = JSON.parse();
-        var leagueData = JSON.parse();
+    function eliteApi($http){
+       
+       var currentLeagueId;
+       
+       
         
-        function getLeagues(){
-            return leagues;
+        function getLeagues(callback){
+            $http.get("http://elite-schedule.net/api/leaguedata").success(function(data){
+               callback(data); 
+            });
         }
         
-        function getLeagueData(){
-            return leagueDate;
+        function getLeagueData(callback){
+           $http.get("http://elite-schedule.net/api/leaguedata/" + currentLeagueId).success(function(data, status){
+               console.log("Received schedule data via HTTP ", data, status);
+               callback(data);
+           }).error(function(){
+               console.log("Error while making http call.");
+           });
+        }
+        
+        function setLeagueId(leagueId){
+            currentLeagueId = leagueId;
         }
         
         return {
             getLeagues: getLeagues,
-            getLeagueData: getLeagueData
+            getLeagueData: getLeagueData,
+            setLeagueId: setLeagueId
         }
 }
 })();

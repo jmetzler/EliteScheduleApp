@@ -1,7 +1,7 @@
 (function(){
     'user strict';
     
-    angular.module('eliteApp').factory('LocationsController', ['eliteApi', LocationsController]);
+    angular.module('eliteApp').controller('LocationsController', ['eliteApi', LocationsController]);
     
     function LocationsController($state, eliteApi){
         var vm = this;

@@ -1,15 +1,17 @@
 (function(){
     'user strict';
     
-    angular.module('eliteApp').factory('LeaguesController', ['$state','eliteApi', LeaguesController]);
+    angular.module('eliteApp').controller('LeaguesController', ['$state','eliteApi', LeaguesController]);
     
     function LeaguesController($state, eliteApi){
         var vm = this;
         
-        var leagues = eliteApi.getLeagues();
-        vm.leagues = leagues;
+        eliteApi.getLeagues(function(data){
+            vm.leagues = data;
+        });       
         
-        vm.selectLeague = function(leagueId){
+        vm.selectLeague = function(id){
+            eliteApi.setLeagueId(id);
             $state.go("app.teams");
         }
     }
